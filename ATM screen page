@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 
 public class PAssign07 extends Application {
 
+	// Create keypad from provided class
+	KeyPadPane keypad = new KeyPadPane();
 	double balance = 56.90; // starting amount // what my current account looks in the moment of making this lol
 	StringBuilder input = new StringBuilder();
 	Label lblScreen = new Label("Enter Pin");
@@ -35,11 +37,11 @@ public class PAssign07 extends Application {
 	Button btnDeposit = new Button("Deposit");
 	Button btnEnter = new Button ("Enter");
 	double amount = 0;
+	final int key = 1234;
+	boolean correctKey = false;
 
 	@Override
 	public void start(Stage primaryStage) {
-		// Create keypad from provided class
-		KeyPadPane keypad = new KeyPadPane();
 
 		// Configure display
 		txtDisplay.setEditable(false);
@@ -129,14 +131,14 @@ public class PAssign07 extends Application {
 			txtDisplay.clear();
 
 			if(correctKey == true) {
-				pw.setText(String.format("balance: %.2f", balance));
+				lblScreen.setText(String.format("balance: %.2f", balance));
 			}
 		});
 		// enter button (login check)
 		btnEnter.setOnAction(e -> {
 		 try {
                 int passWord = Integer.parseInt(input.toString());
-                if (passWord == Key) {
+                if (passWord == key) {
                     correctKey = true;
                     lblScreen.setText(String.format("Welcome!\nBalance: $%.2f", balance));
                     input.setLength(0);
