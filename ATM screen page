@@ -28,12 +28,12 @@ public class PAssign07 extends Application {
 
 	double balance = 56.90; // starting amount // what my current account looks in the moment of making this lol
 	StringBuilder input = new StringBuilder();
-	Label lblScreen = new Label("Enter amount:\nbalance: " + balance);
+	Label lblScreen = new Label("Enter Pin");
 	TextField txtDisplay = new TextField();
 	Button btnWithdrawl = new Button("Withdrawl");
 	Button btnClear = new Button("Clear");
-	Button btnCancel = new Button("Cancel");
 	Button btnDeposit = new Button("Deposit");
+	Button btnEnter = new Button ("Enter");
 	double amount = 0;
 
 	@Override
@@ -46,8 +46,8 @@ public class PAssign07 extends Application {
 		txtDisplay.setPrefWidth(200);
 		txtDisplay.setAlignment(Pos.CENTER);
 
-		// Layout for control buttons
-		HBox controlButtons = new HBox(10, btnWithdrawl, btnClear, btnCancel, btnDeposit);
+		// Layout for control buttons for scene 1
+		HBox controlButtons = new HBox(10, btnEnter, btnClear);
 		controlButtons.setAlignment(Pos.CENTER);
 
 		VBox displayArea = new VBox(10, lblScreen, txtDisplay, controlButtons);
@@ -127,13 +127,37 @@ public class PAssign07 extends Application {
 		btnClear.setOnAction(e -> {
 			input.setLength(0);
 			txtDisplay.clear();
-		});
 
-		btnCancel.setOnAction(e -> {
-			input.setLength(0);
-			txtDisplay.clear();
-			lblScreen.setText("Enter amount:\nbalance: " + balance);
+			if(correctKey == true) {
+				pw.setText(String.format("balance: %.2f", balance));
+			}
 		});
+		// enter button (login check)
+		btnEnter.setOnAction(e -> {
+		 try {
+                int passWord = Integer.parseInt(input.toString());
+                if (passWord == Key) {
+                    correctKey = true;
+                    lblScreen.setText(String.format("Welcome!\nBalance: $%.2f", balance));
+                    input.setLength(0);
+                    txtDisplay.clear();
+
+                    // Replace Scene 1 controls with Scene 2 controls
+                    HBox controlButtons2 = new HBox(10, btnDeposit, btnClear, btnWithdrawl);
+                    controlButtons2.setAlignment(Pos.CENTER);
+
+                    VBox displayArea2 = new VBox(10, lblScreen, txtDisplay, controlButtons2);
+                    displayArea2.setAlignment(Pos.CENTER);
+
+                    root.setTop(displayArea2); // reuse same root
+                } else {
+                    lblScreen.setText("Incorrect Pin");
+                }
+            } catch (NumberFormatException ex) {
+                lblScreen.setText("Invalid input. Try again.");
+            }
+        });
+		
 
 		// Setup scene
 		Scene scene = new Scene(root);
